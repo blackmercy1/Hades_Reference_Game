@@ -1,4 +1,5 @@
 using FixedUpdates;
+using UI.JoyStick;
 using UnityEngine;
 using Updates;
 
@@ -14,12 +15,21 @@ namespace Installers
         [SerializeField] private UIInstaller _uiInstaller = null;
         [SerializeField] private EnvironmentInstaller _environmentInstaller = null;
         [SerializeField] private CharacterInstaller _characterInstaller;
-        
+
+        [SerializeField] private Joystick _joyStick;
+
         private void Start() => InstallGame();
 
         private void InstallGame()
         {
-            _characterInstaller.InitializeCharacters(_fixedGameUpdates, _gameUpdates);
+            _characterInstaller.InitializeCharacters(_fixedGameUpdates, _gameUpdates, _joyStick);
+            
+            DestroyInstaller();
+        }
+
+        private void DestroyInstaller()
+        {
+            Destroy(this);
         }
     }
 }

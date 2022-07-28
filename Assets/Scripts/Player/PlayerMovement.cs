@@ -1,3 +1,4 @@
+using UI.JoyStick;
 using UnityEngine;
 
 namespace Player
@@ -7,23 +8,23 @@ namespace Player
         private readonly Rigidbody2D _playerRigidbody;
         private readonly PlayerInput _playerInput;
         private readonly PlayerSettingConfig _playerSettingConfig;
+        private readonly Joystick _joyStick;
 
-        public PlayerMovement(PlayerInput playerInput, Rigidbody2D playerRigidbody, PlayerSettingConfig playerSettingConfig)
+        public PlayerMovement(PlayerInput playerInput, Rigidbody2D playerRigidbody, 
+            PlayerSettingConfig playerSettingConfig, Joystick joyStick)
         {
             _playerInput = playerInput;
             _playerRigidbody = playerRigidbody;
             _playerSettingConfig = playerSettingConfig;
+            _joyStick = joyStick;
         }
 
         public void Move(float fixedDeltaTime)
         {
-            // _playerRigidbody.MovePosition(_playerRigidbody.position * _playerInput.PlayerInputDirection *10000f* fixedDeltaTime);
             var inputVector = Vector2.ClampMagnitude(_playerInput.PlayerInputDirection, 1f);
-            var movement = inputVector * _playerSettingConfig.Speed ;
+            var movement = _joyStick.JoyStickInputDirection * _playerSettingConfig.Speed;
             var newPosition = (Vector2)_playerRigidbody.transform.position + movement * fixedDeltaTime;
 
-            Debug.Log($"{movement}");
-            
             _playerRigidbody.MovePosition(newPosition);
         }
     }

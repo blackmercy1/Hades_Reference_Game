@@ -1,5 +1,6 @@
 using FixedUpdates;
 using Player;
+using UI.JoyStick;
 using UnityEngine;
 using Updates;
 
@@ -10,9 +11,12 @@ namespace Installers
         [SerializeField] private Rigidbody2D _playerRigidbody;
         [SerializeField] private PlayerSettingConfig _playerSettingConfig;
 
-        public void InitializeCharacters(FixedGameUpdates fixedGameUpdates, GameUpdates gameUpdates)
+        private Joystick _joyStick;
+        
+        public void InitializeCharacters(FixedGameUpdates fixedGameUpdates, GameUpdates gameUpdates, Joystick joyStick)
         {
             var playerInput = new PlayerInput();
+            _joyStick = joyStick;
             var player = CreatePlayer(playerInput, _playerRigidbody, _playerSettingConfig, 
                 fixedGameUpdates, gameUpdates);
         }
@@ -20,7 +24,7 @@ namespace Installers
         private MainPlayer CreatePlayer(PlayerInput playerInput, Rigidbody2D playerRigidbody, 
             PlayerSettingConfig playerSettingConfig, FixedGameUpdates fixedGameUpdates, GameUpdates gameUpdates)
         {
-            var player = new MainPlayer(playerInput, playerRigidbody, playerSettingConfig);
+            var player = new MainPlayer(playerInput, playerRigidbody, playerSettingConfig, _joyStick);
             gameUpdates.AddToUpdateList(player);
             fixedGameUpdates.AddToUpdateList(player);
             

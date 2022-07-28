@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using Updates;
 
 namespace Player
 {
@@ -12,8 +10,6 @@ namespace Player
 
         private const string VERTICAL = "Vertical";
         private const string HORIZONTAL = "Horizontal";
-
-        public event Action<IUpdate> UpdateRemoveRequested;
         
         public void GetInput()
         {
