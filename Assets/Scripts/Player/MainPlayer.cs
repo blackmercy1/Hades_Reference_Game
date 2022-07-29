@@ -1,11 +1,12 @@
 using System;
+using Interfaces;
 using UI.JoyStick;
 using UnityEngine;
 using Updates;
 
 namespace Player
 {
-    public sealed class MainPlayer : IUpdate, IFixedUpdate
+    public sealed class MainPlayer : IUpdate, IFixedUpdate, IClean
     {
         public event Action<IFixedUpdate> UpdateFixedRemoveRequested;
         public event Action<IUpdate> UpdateRemoveRequested;
@@ -15,13 +16,17 @@ namespace Player
         private readonly PlayerInput _playerInput;
         private readonly PlayerSettingConfig _playerSettingConfig;
 
-        public MainPlayer(PlayerInput playerInput, Rigidbody2D playerRigidbody, 
-            PlayerSettingConfig playerSettingConfig, Joystick joystick)
+        private readonly IsometricCharacterRenderer _iso;
+
+        public MainPlayer(PlayerInput playerInput, Rigidbody2D playerRigidbody,
+            PlayerSettingConfig playerSettingConfig, Joystick joystick,
+            IsometricCharacterRenderer isometricCharacterRenderer)
         {
             _playerInput = playerInput;
             _playerRigidbody = playerRigidbody;
             _playerSettingConfig = playerSettingConfig;
             _joyStick = joystick;
+            _iso = isometricCharacterRenderer;
         }
 
         public void GameUpdate(float deltaTime)
@@ -37,7 +42,12 @@ namespace Player
 
         private PlayerMovement GetMovement()
         {
-            return new PlayerMovement(_playerInput, _playerRigidbody, _playerSettingConfig, _joyStick);
+            return new PlayerMovement(_playerInput, _playerRigidbody, _playerSettingConfig, _joyStick, _iso);
+        }
+
+        public void Clean()
+        {
+            throw new NotImplementedException();
         }
     }
 }

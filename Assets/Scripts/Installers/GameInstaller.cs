@@ -12,7 +12,7 @@ namespace Installers
         [SerializeField] private FixedGameUpdates _fixedGameUpdates;
 
         [Header("Installers")] 
-        [SerializeField] private UIInstaller _uiInstaller = null;
+        [SerializeField] private UIInstaller _uiInstaller;
         [SerializeField] private EnvironmentInstaller _environmentInstaller = null;
         [SerializeField] private CharacterInstaller _characterInstaller;
 
@@ -23,13 +23,14 @@ namespace Installers
         private void InstallGame()
         {
             _characterInstaller.InitializeCharacters(_fixedGameUpdates, _gameUpdates, _joyStick);
+            _uiInstaller.Init();
             
             DestroyInstaller();
         }
 
         private void DestroyInstaller()
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
     }
 }
