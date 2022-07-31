@@ -1,3 +1,4 @@
+using System;
 using UI.JoyStick;
 using UnityEngine;
 
@@ -5,6 +6,8 @@ namespace Player
 {
     public class PlayerMovement
     {
+        public event Action PlayerMoved; 
+
         private readonly Rigidbody2D _playerRigidbody;
         private readonly PlayerInput _playerInput;
         private readonly PlayerSettingConfig _playerSettingConfig;
@@ -20,8 +23,15 @@ namespace Player
             _playerSettingConfig = playerSettingConfig;
             _joyStick = joyStick;
             _isometricCharacterRenderer = isometricCharacterRenderer;
+            
+            _joyStick.JoystickMove += OnJoystickMove;
         }
 
+        private void OnJoystickMove()
+        {
+            PlayerMoved?.Invoke();
+        }
+        
         public void Move(float fixedDeltaTime)
         {
             var movementKeyBoard = Vector2.zero;
@@ -30,11 +40,8 @@ namespace Player
             movementKeyBoard = _playerInput.PlayerInputDirection * _playerSettingConfig.Speed;
 #endif
             var movement = _joyStick.JoyStickInputDirection * _playerSettingConfig.Speed;
-            
-            var newPosition = (Vector2)_playerRigidbody.transform.position + (movement + inputVector) 
+            var newPosition = (Vector2) _playerRigidbody.transform.position + (movement + inputVector)
                 * fixedDeltaTime;
-            
-            Debug.Log(newPosition);
 
             _isometricCharacterRenderer.SetDirections(_joyStick.JoyStickInputDirection);
             _playerRigidbody.MovePosition(newPosition);

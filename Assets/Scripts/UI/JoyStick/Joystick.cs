@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace UI.JoyStick
@@ -10,6 +11,8 @@ namespace UI.JoyStick
         [SerializeField] private GameObject _joyStickHandler;
 
         public Vector2 JoyStickInputDirection => _joystickInputPosition;
+        
+        public event Action JoystickMove;
 
         private Vector2 _joystickInputPosition;
         private Vector2 _joystickTouchPos;
@@ -37,8 +40,11 @@ namespace UI.JoyStick
         {
             var dragPosition = eventData.position;
             var joystickDist = Vector2.Distance(dragPosition, _joystickTouchPos);
-
+            
             _joystickInputPosition = (dragPosition - _joystickTouchPos).normalized;
+            
+            JoystickMove?.Invoke();
+            
             _joystick.transform.position = joystickDist < _joystickRadius
                 ? _joystickTouchPos + _joystickInputPosition * joystickDist
                 : _joystick.transform.position = _joystickTouchPos + _joystickInputPosition * _joystickRadius;

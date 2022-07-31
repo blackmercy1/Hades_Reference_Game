@@ -18,6 +18,8 @@ namespace Player
 
         private readonly IsometricCharacterRenderer _iso;
 
+        public PlayerMovement PlayerMovement;
+
         public MainPlayer(PlayerInput playerInput, Rigidbody2D playerRigidbody,
             PlayerSettingConfig playerSettingConfig, Joystick joystick,
             IsometricCharacterRenderer isometricCharacterRenderer)
@@ -36,8 +38,8 @@ namespace Player
 
         public void FixedGameUpdate(float fixedDeltaTime)
         {
-            var movement = GetMovement();
-            movement.Move(fixedDeltaTime);
+            PlayerMovement = GetMovement();
+            PlayerMovement.Move(fixedDeltaTime);
         }
 
         private PlayerMovement GetMovement()
